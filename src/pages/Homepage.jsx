@@ -8,12 +8,14 @@ import Footer from "../components/Footer";
 
 const Homepage = () => {
   const [showAll, setShowAll] = useState(false)
-
+  const [showButtonName,setShowButtonName] = useState('Show more')
   const onShowMoreButtonClick = useCallback(() => {
     if (!showAll) {
       setShowAll(true)
+      setShowButtonName('Show less')
     } else {
       setShowAll(false)
+      setShowButtonName('Show more')
     }
   })
   return (
@@ -43,7 +45,7 @@ const Homepage = () => {
             height: 48,
           }}
         >
-          Show more
+          {showButtonName}
         </Button>
       </main>
       <Footer />
