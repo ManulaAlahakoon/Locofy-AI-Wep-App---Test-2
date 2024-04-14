@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import ListingItem from "./ListingItem";
 
-const CardList = () => {
+const CardList = ({showAll}) => {
   const navigate = useNavigate();
   const [cardState, setCardState] = useState([
     {
@@ -139,11 +139,12 @@ const CardList = () => {
     navigate("/");
   }, [navigate]);
 
+  const croppedCardState = showAll ? cardState : cardState.slice(0,8)
   return (
-    <section className="w-full flex flex-row flex-wrap items-start justify-center gap-[20px_18.7px] max-w-[1280px] min-h-[1692px] text-left text-xs text-accent font-archivo mq1275:max-w-full">
-      {cardState.map((item, index) => (
+    <section className="w-full flex flex-row flex-wrap items-start justify-center gap-[20px_18.7px] max-w-[1280px] text-left text-xs text-accent font-archivo mq1275:max-w-full">
+      {croppedCardState.map((item, index) => (
         <ListingItem
-          key={item}
+          key={index}
           listingImage={item.listingImage}
           listingTitle={item.listingTitle}
           listingSubtitle={item.listingSubtitle}

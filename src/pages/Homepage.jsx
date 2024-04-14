@@ -1,3 +1,4 @@
+import {useCallback,useState} from "react"
 import { Button } from "@mui/material";
 import Header from "../components/Header";
 import HeroContainer from "../components/HeroContainer";
@@ -6,6 +7,15 @@ import CardList from "../components/CardList";
 import Footer from "../components/Footer";
 
 const Homepage = () => {
+  const [showAll, setShowAll] = useState(false)
+
+  const onShowMoreButtonClick = useCallback(() => {
+    if (!showAll) {
+      setShowAll(true)
+    } else {
+      setShowAll(false)
+    }
+  })
   return (
     <div className="w-full relative bg-gray-100 overflow-hidden flex flex-col items-center justify-start leading-[normal] tracking-[normal] text-left text-sm text-black font-archivo">
       <Header
@@ -16,11 +26,12 @@ const Homepage = () => {
       <HeroContainer />
       <main className="self-stretch flex flex-col items-center justify-start py-6 px-20 gap-[22px] mq750:pl-10 mq750:pr-10 mq750:box-border mq1275:pt-5 mq1275:pb-5 mq1275:box-border">
         <SearchSectionHeader />
-        <CardList />
+        <CardList showAll={ showAll } />
         <Button
           className="w-[147px] h-12"
           disableElevation={true}
           variant="outlined"
+          onClick = {onShowMoreButtonClick}
           sx={{
             textTransform: "none",
             color: "#00c29f",
