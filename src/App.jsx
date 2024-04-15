@@ -60,8 +60,8 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<PropertyDetails />} />
-      <Route path="/homepage" element={<Homepage />} />
+      <Route path="/property-details" element={<PropertyDetails />} />
+      <Route path="/" element={<Homepage />} />
       <Route path="/sign-up-page" element={<SignUpPage />} />
       <Route path="/sign-in-page" element={<SignInPage />} />
     </Routes>
