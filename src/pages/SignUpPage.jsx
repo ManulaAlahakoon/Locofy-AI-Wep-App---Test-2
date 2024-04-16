@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback,useState } from "react";
 import {
   TextField,
   InputAdornment,
@@ -11,6 +11,22 @@ import SocialMediaLogin from "../components/SocialMediaLogin";
 import { useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmedPassword, setConfirmedPassword] = useState("")
+
+  const signUp = async () => {
+    if (password === confirmedPassword) {
+      const res = await fetch(`${process.env.REACT_APP_SERVER_URI}/signup`, {
+        method: "POST",
+        headers: { 'content-Type': 'application/json' },
+        body: JSON.stringify({email,password})
+      })
+
+      const data = await res.json()
+      console.log(data)
+    }
+  }
   const navigate = useNavigate();
 
   const onIAlreadyHaveClick = useCallback(() => {
@@ -37,6 +53,8 @@ const SignUpPage = () => {
                     <TextField
                       className="[border:none] bg-[transparent] self-stretch h-[51px] font-archivo text-base text-light-text"
                       placeholder="Email address"
+                      value={email}
+                      onChange={e=>setEmail(e.target.value)}
                       variant="outlined"
                       InputProps={{
                         endAdornment: (
@@ -60,6 +78,8 @@ const SignUpPage = () => {
                     <TextField
                       className="[border:none] bg-[transparent] self-stretch h-[51px] font-archivo text-base text-light-text"
                       placeholder="Password"
+                      value={password}
+                      onChange={(e=>setPassword(e.target.value))}
                       variant="outlined"
                       type="password"
                       InputProps={{
@@ -86,6 +106,8 @@ const SignUpPage = () => {
                       placeholder="Confirm password"
                       variant="outlined"
                       type="password"
+                      value={confirmedPassword}
+                      onChange={(e=>setConfirmedPassword(e.target.value))}
                       InputProps={{
                         endAdornment: (
                           <img
@@ -110,6 +132,7 @@ const SignUpPage = () => {
                     className="w-40 h-[52px] hover:bg-saddlebrown"
                     disableElevation={true}
                     variant="contained"
+                    onClick={signUp}
                     sx={{
                       textTransform: "none",
                       color: "#fff",
