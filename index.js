@@ -19,7 +19,15 @@ app.post('/signup', async (req, res) => {
     const salt = bcript.genSaltSync(10)
     const hash = bcrypt.hashSync(password, salt)
     
-    try {        
+    try {  
+        const client = new MongoClient(uri)
+        const database = client.db('locofy_app_db')
+        const users = database.collection("users")
+        const exsistingUser = await users.findOne({ email })
+        
+        if (exsistingUser) {
+            return res.status(409).send("User already exist!")
+        }
         
     } catch (error) {
         console.error(error)
