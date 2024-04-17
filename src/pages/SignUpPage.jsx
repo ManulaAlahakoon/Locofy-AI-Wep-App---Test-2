@@ -9,6 +9,10 @@ import {
 import Header from "../components/Header";
 import SocialMediaLogin from "../components/SocialMediaLogin";
 import { useNavigate } from "react-router-dom";
+//import 'dotenv/config';
+//require('dotenv').config()
+
+
 
 const SignUpPage = () => {
   const [email, setEmail] = useState("")
@@ -17,7 +21,7 @@ const SignUpPage = () => {
 
   const signUp = async () => {
     if (password === confirmedPassword) {
-      const res = await fetch(`${process.env.REACT_APP_SERVER_URI}/signup`, {
+      const res = await fetch('http://localhost:8000/signup', {    //${process.env.REACT_APP_SERVER_URI}
         method: "POST",
         headers: { 'content-Type': 'application/json' },
         body: JSON.stringify({email,password})
