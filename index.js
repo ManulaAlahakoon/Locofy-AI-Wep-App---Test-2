@@ -4,6 +4,7 @@ const cors = require('cors')
 const { MongoClient } = require('mongodb')
 const { v4: uuidv4 } = require('uuid')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const app = express()
 
@@ -51,6 +52,11 @@ app.post('/signup', async (req, res) => {
         }
 
         const insertedUser = await users.insertOne(data)
+
+        const token = jwt.sign(insertedUser, sanitizedEmail, {
+            expiresIn: 60 * 24
+        })
+        res.status(201).json({token,userId:generatedUsereId})
        
     } catch (error) {
         console.error(error)
