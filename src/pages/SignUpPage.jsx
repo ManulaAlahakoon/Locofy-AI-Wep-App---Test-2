@@ -1,4 +1,5 @@
-import { useCallback,useState } from "react";
+import { useCallback, useState } from "react";
+import { useCookies } from 'react-cookie'
 import {
   TextField,
   InputAdornment,
@@ -15,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const SignUpPage = () => {
+   const [ cookies,setCookie,removeCookie ] = useCookies(null)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmedPassword, setConfirmedPassword] = useState("")
@@ -29,6 +31,10 @@ const SignUpPage = () => {
 
       const data = await res.json()
       console.log(data)
+      setCookie('AuthToken', data.token)
+      setCookie('UserId', data.userId) //Can use to identify which user is using the app at a moment
+
+      //window.location.reload()
     }
   }
   const navigate = useNavigate();
