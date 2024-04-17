@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { useCookies } from 'react-cookie';
+
 import {
   Routes,
   Route,
@@ -11,9 +13,11 @@ import SignUpPage from "./pages/SignUpPage";
 import SignInPage from "./pages/SignInPage";
 
 function App() {
+  const [ cookies,setCookie,removeCookie ] = useCookies(null)
   const action = useNavigationType();
   const location = useLocation();
   const pathname = location.pathname;
+  const authtoken = cookies.AuthToken
 
   useEffect(() => {
     if (action !== "POP") {
@@ -60,10 +64,10 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/property-details" element={<PropertyDetails />} />
-      <Route path="/" element={<Homepage />} />
-      <Route path="/sign-up-page" element={<SignUpPage />} />
-      <Route path="/sign-in-page" element={<SignInPage />} />
+      {authtoken && <Route path="/property-details" element={<PropertyDetails />} />}
+      {authtoken && <Route path="/" element={<Homepage />} />}
+      {!authtoken && <Route path="/sign-up-page" element={<SignUpPage />} />}
+      {!authtoken && <Route path="/sign-in-page" element={<SignInPage />} />}
     </Routes>
   );
 }
