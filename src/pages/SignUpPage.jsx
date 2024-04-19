@@ -35,6 +35,7 @@ const SignUpPage = () => {
       setCookie('UserId', data.userId) //Can use to identify which user is using the app at a moment
 
       //window.location.reload()
+      navigate('/')
     }
   }
   const navigate = useNavigate();
