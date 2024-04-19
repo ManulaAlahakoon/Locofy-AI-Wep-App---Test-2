@@ -61,7 +61,33 @@ app.post('/signup', async (req, res) => {
     } catch (error) {
         console.error(error)
     } finally {
+        //await client.close()
+    }
+})
+
+// Sign in
+app.post('/signin', async (req, res) => {
+    const client = new MongoClient(uri)
+    const { email, password } = req.body
+    try {
+        await client.connect()
+        const database = client.db("locofy_app_db")
+        const users = database.collection("users")
+        const user = await users.findOne({ email })
+        const correctPassword = await bcrypt.compare(password,user.hashed_password)
         
+        if (user && correctPassword) {
+            const token = jwt.sign(user, user.email, {
+            expiresIn: 60 * 24
+        })
+          res.status(201).json({token,userId:user.user_id})  
+        } else {
+            console.log("Invalid credintials")
+        }
+    } catch (error) {
+        console.error(error)
+    } finally {
+        await client.close()
     }
 })
 

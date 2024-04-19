@@ -1,4 +1,5 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import {useCookies} from 'react-cookie'
 import {
   TextField,
   InputAdornment,
@@ -13,9 +14,29 @@ import { useNavigate } from "react-router-dom";
 const SignInPage = () => {
   const navigate = useNavigate();
 
+  const [cookies,setCookie,removeCookie] = useCookies(null)
+  const [email, setEmail] = useState("")
+  const [password,setPassword] = useState("")
+
   const onDontHaveAnClick = useCallback(() => {
     navigate("/sign-up-page");
   }, [navigate]);
+
+  const login = async (e) => {
+    e.preventDefault()
+    if (email && password) {
+      const res = await fetch('http://localhost:8000/signin', {
+        method: "POST",
+        headers: { 'content-Type': 'application/json' },
+        body: JSON.stringify({email,password})
+      })
+    const data = await res.json()
+    console.log(data)
+    setCookie('AuthToken',data.token)
+    setCookie('UserId', data.userId)
+    navigate('/')  
+    }
+  }
 
   return (
     <div className="w-full relative bg-gray-100 overflow-hidden flex flex-col items-start justify-start pt-0 px-0 pb-[0.1px] box-border leading-[normal] tracking-[normal] hover:[background:linear-gradient(#fff,_#fff),_#87550a]">
@@ -37,6 +58,8 @@ const SignInPage = () => {
                     <TextField
                       className="[border:none] bg-[transparent] self-stretch h-[51px] font-archivo text-base text-light-text"
                       placeholder="Email address"
+                      value={email}
+                      onChange={e=>setEmail(e.target.value)}
                       variant="outlined"
                       InputProps={{
                         endAdornment: (
@@ -60,6 +83,8 @@ const SignInPage = () => {
                     <TextField
                       className="[border:none] bg-[transparent] self-stretch h-[51px] font-archivo text-base text-light-text"
                       placeholder="Password"
+                      value={password}
+                      onChange={e=>setPassword(e.target.value)}                      
                       variant="outlined"
                       type="password"
                       InputProps={{
@@ -85,6 +110,7 @@ const SignInPage = () => {
                   <Button
                     className="w-40 h-[52px] hover:bg-saddlebrown"
                     disableElevation={true}
+                    onClick={login}
                     variant="contained"
                     sx={{
                       textTransform: "none",
